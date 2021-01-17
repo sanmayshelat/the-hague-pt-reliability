@@ -1,0 +1,4 @@
+- Uses smart card (AFC) and vehicle location (AVL) data. Note that format of these datasets often vary by region. Also uses GTFS files. 
+- Run scripts in order given in the main file. 
+- Some scripts have a parallelised implementations because they take too long on their own. Apparently, these implementations cannot be called from a main file so they have to be run separately.
+- mnl2 is a multinomial logit model that uses PandasBiogeme libraries (https://biogeme.epfl.ch/). Please do not forget to cite them as well if you use this script.
