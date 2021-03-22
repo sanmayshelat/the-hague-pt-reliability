@@ -2,10 +2,11 @@
 
 #%% Imports
 import pandas as pd
-import numpy as np
 import biogeme.database as bioDb
 import biogeme.biogeme as bioBio
-#dssd
+import biogeme.models as bioModels
+from biogeme.expressions import Beta
+# dssd
 #%% Clean up: Deletes previous models!
 #import re
 #oldModelName = 'mnl'
@@ -57,7 +58,7 @@ maxAlts = results['numAlts'].max()
 database = bioDb.Database('results',results) 
 #!!! also creates headers.py which imports biogeme.expressions completely !!!
 
-from headers import * # import the above created module completely
+globals().update(database.variables)
 
 #%% Define parameters
 #!!! Note the fixed values
@@ -75,8 +76,8 @@ bBusOWt50 = Beta('bBusOWt50',0,-1000,1000,1)
 bTramOWt50 = Beta('bTramOWt50',0,-1000,1000,1)
 #O-Diff
 bOWtDiff = Beta('bOWtDiff',0,-1000,1000,1)
-bBusOWtDiff = Beta('bBusOWtDiff',0,-1000,1000,1)
-bTramOWtDiff = Beta('bTramOWtDiff',0,-1000,1000,1)
+bBusOWtDiff = Beta('bBusOWtDiff',0,-1000,1000,0)
+bTramOWtDiff = Beta('bTramOWtDiff',0,-1000,1000,0)
 #O-PosDiff
 bOWtPosDiff = Beta('bOWtPosDiff',0,-1000,1000,1)
 bBusOWtPosDiff = Beta('bBusOWtPosDiff',0,-1000,1000,1)
@@ -95,8 +96,8 @@ bBusOWtRbi = Beta('bBusOWtRbi',0,-1000,1000,1)
 bTramOWtRbi = Beta('bTramOWtRbi',0,-1000,1000,1)
 #O-STD
 bOWtStd = Beta('bOWtStd',0,-1000,1000,1)
-bBusOWtStd = Beta('bBusOWtStd',0,-1000,1000,1)
-bTramOWtStd = Beta('bTramOWtStd',0,-1000,1000,1)
+bBusOWtStd = Beta('bBusOWtStd',0,-1000,1000,0)
+bTramOWtStd = Beta('bTramOWtStd',0,-1000,1000,0)
 #O-SKEW
 bOWtSkew = Beta('bOWtSkew',0,-1000,1000,1)
 bBusOWtSkew = Beta('bBusOWtSkew',0,-1000,1000,1)
@@ -118,7 +119,7 @@ bTramTWt50 = Beta('bTramTWt50',0,-1000,1000,1)
 #T-Diff
 bTWtDiff = Beta('bTWtDiff',0,-1000,1000,1)
 bBusTWtDiff = Beta('bBusTWtDiff',0,-1000,1000,1)
-bTramTWtDiff = Beta('bTramTWtDiff',0,-1000,1000,1)
+bTramTWtDiff = Beta('bTramTWtDiff',0,-1000,1000,0)
 #T-PosDiff
 bTWtPosDiff = Beta('bTWtPosDiff',0,-1000,1000,1)
 bBusTWtPosDiff = Beta('bBusTWtPosDiff',0,-1000,1000,1)
@@ -288,7 +289,7 @@ utilityFxns = {0:v0,1:v1,2:v2,3:v3}
 avail = {0:av_0,1:av_1,2:av_2,3:av_3}
 
 #%% Define estimation
-logprob = bioLogLogit(utilityFxns,avail,routeId) # last argument is choice column name in dataset
+logprob = bioModels.loglogit(utilityFxns,avail,routeId) # last argument is choice column name in dataset
 biogeme  = bioBio.BIOGEME(database,logprob)
 biogeme.modelName = modelName
 estimates = biogeme.estimate()
